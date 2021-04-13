@@ -15,6 +15,7 @@ use std::path::PathBuf;
 
 mod dir;
 mod file;
+mod utils;
 
 #[proc_macro_hack]
 pub fn include_dir(input: TokenStream) -> TokenStream {
@@ -35,3 +36,4 @@ pub fn include_dir(input: TokenStream) -> TokenStream {
         #dir
     })
 }
+

@@ -2,6 +2,7 @@ use anyhow::Error;
 use proc_macro2::TokenStream;
 use quote::{quote, ToTokens};
 use std::path::{Path, PathBuf};
+use crate::utils::create_cross_platform_path;
 
 #[derive(Debug, Clone, PartialEq)]
 pub(crate) struct File {
@@ -25,7 +26,7 @@ impl File {
 
 impl ToTokens for File {
     fn to_tokens(&self, tokens: &mut TokenStream) {
-        let root_rel_path = self.root_rel_path.display().to_string();
+        let root_rel_path = create_cross_platform_path(&self.root_rel_path);
         let abs_path = self.abs_path.display().to_string();
 
         let tok = quote! {
