@@ -15,7 +15,6 @@ use std::{env, ffi::OsString};
 
 mod dir;
 mod file;
-mod utils;
 
 #[proc_macro_hack]
 pub fn include_dir(input: TokenStream) -> TokenStream {
@@ -46,4 +45,3 @@ fn include_dir_from_root(root: OsString, input: TokenStream) -> TokenStream {
         #dir
     })
 }
-
