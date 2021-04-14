@@ -3,7 +3,6 @@ use anyhow::{self, format_err, Context, Error};
 use proc_macro2::TokenStream;
 use quote::{quote, ToTokens};
 use std::path::{Path, PathBuf};
-use crate::utils::create_cross_platform_path;
 
 #[derive(Debug, Clone, PartialEq)]
 pub(crate) struct Dir {
@@ -48,14 +47,16 @@ impl Dir {
 
 impl ToTokens for Dir {
     fn to_tokens(&self, tokens: &mut TokenStream) {
-        let root_rel_path = create_cross_platform_path(&self.root_rel_path);
+        let root_rel_path = self.root_rel_path.display().to_string();
+        let root_rel_path_windows = root_rel_path.replace("/", "\\");
+        let root_rel_path_unix = root_rel_path.replace("\\", "/");
 
         let files = &self.files;
         let dirs = &self.dirs;
 
         let tok = quote! {
             $crate::Dir {
-                path: #root_rel_path,
+                path: if cfg!(windows) {#root_rel_path_windows} else {#root_rel_path_unix},
                 files: &[#(
                     #files
                  ),*],
